@@ -10,15 +10,15 @@ import UIKit
 
 class FeedController: UIViewController  {
     
-    var tableImages: [String] = ["http://i.imgur.com/AD3MbBi.jpg",
-                                 "http://i.imgur.com/zYhkOrM.jpg",
-                                 "http://i.imgur.com/mtbl1cr.jpg",
-                                 "http://i.imgur.com/L9ZftiD.jpg",
-                                 "http://i.imgur.com/xW2K0rt.jpg",
-                                 "http://i.imgur.com/xjaMIKB.png",
-                                 "http://i.imgur.com/Jvh1OQm.jpg",
-                                 "http://i.imgur.com/JOKsNeT.jpg",
-                                 "http://i.imgur.com/EavudiD.jpg"]
+    var tableImages: [String] = ["https://goo.gl/U753bm",
+                                 "https://goo.gl/uzvhec",
+                                 "https://goo.gl/z8mPT0",
+                                 "https://goo.gl/CVEbwv",
+                                 "https://goo.gl/UnXzw9",
+                                 "https://goo.gl/3D9PYO",
+                                 "https://goo.gl/3Y9YQu"]
+    
+    var selectedImage = 0
     
     var nextImageButton: UIButton = {
         var button = UIButton(type: .system)
@@ -67,7 +67,7 @@ class FeedController: UIViewController  {
         setActivityIndicator()
         setNextImageButton()
         
-        chooseImage(imageNumber: 0)
+        chooseImage(imageNumber: selectedImage)
         
     }
     
@@ -98,6 +98,7 @@ class FeedController: UIViewController  {
     func chooseImage(imageNumber: Int) {
         activityIndicator.startAnimating()
         let imageURL = URL(string: tableImages[imageNumber])
+        selectedImage = imageNumber
 
         fetchImageFromURL(imageURL: imageURL!)
     }
@@ -117,7 +118,12 @@ class FeedController: UIViewController  {
     
     // Handler that requests an additional image when the user taps on the next button.
     func nextImageTouched () {
-        let number = Int(arc4random_uniform(UInt32(tableImages.count - 1)))
+        var number = Int(arc4random_uniform(UInt32(tableImages.count - 1)))
+        print(number)
+        while (number == selectedImage) {
+            number = Int(arc4random_uniform(UInt32(tableImages.count - 1)))
+            print(number)
+        }
         chooseImage(imageNumber: number)
     }
 
