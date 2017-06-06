@@ -23,7 +23,7 @@ class FeedController: UIViewController  {
     var nextImageButton: UIButton = {
         var button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.blue
+        button.backgroundColor = UIColor(red: 240/255.0, green: 240/255.0, blue: 240/255.0, alpha: 1)
         button.setTitle("Next", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.layer.cornerRadius = 5
@@ -49,9 +49,28 @@ class FeedController: UIViewController  {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 15
         imageView.layer.masksToBounds = true
+        imageView.alpha = CGFloat(0.5)
         
         return imageView
     }()
+    
+    var transparencySlider: UISlider = {
+        let slider = UISlider(frame: CGRect(x: 0, y: 0, width:280, height: 20))
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.minimumValue = 0
+        slider.maximumValue = 100
+        slider.isContinuous = true
+        slider.value = 50
+        slider.tintColor = UIColor(red: 240/255.0, green: 240/255.0, blue: 240/255.0, alpha: 1)
+        slider.addTarget(self, action: #selector(sliderValueDidChange), for: .valueChanged)
+        slider.layer.cornerRadius = 5
+        slider.layer.masksToBounds = true
+        return slider
+    }()
+    
+    func sliderValueDidChange() {
+        imageOnDisplay.alpha = CGFloat(transparencySlider.value/100.0)
+    }
     
 
     override func viewDidLoad() {
@@ -61,11 +80,13 @@ class FeedController: UIViewController  {
         view.addSubview(imageOnDisplay)
         view.addSubview(activityIndicator)
         view.addSubview(nextImageButton)
+        view.addSubview(transparencySlider)
         activityIndicator.stopAnimating()
         
         setImageOnDisplay()
         setActivityIndicator()
         setNextImageButton()
+        setTransparencySlider()
         
         chooseImage(imageNumber: selectedImage)
         
@@ -89,6 +110,13 @@ class FeedController: UIViewController  {
         nextImageButton.topAnchor.constraint(equalTo: imageOnDisplay.bottomAnchor, constant: 12).isActive = true
         nextImageButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75).isActive = true
         nextImageButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    func setTransparencySlider() {
+        transparencySlider.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        transparencySlider.topAnchor.constraint(equalTo: nextImageButton.bottomAnchor, constant: 12).isActive = true
+        transparencySlider.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75).isActive = true
+        transparencySlider.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     
