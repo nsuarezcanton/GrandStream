@@ -147,10 +147,8 @@ class FeedController: UIViewController  {
     // Handler that requests an additional image when the user taps on the next button.
     func nextImageTouched () {
         var number = Int(arc4random_uniform(UInt32(tableImages.count - 1)))
-        print(number)
         while (number == selectedImage) {
             number = Int(arc4random_uniform(UInt32(tableImages.count - 1)))
-            print(number)
         }
         chooseImage(imageNumber: number)
     }
